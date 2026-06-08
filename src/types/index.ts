@@ -32,6 +32,7 @@ export interface RouteItem {
   image: string;
   mainRoads: string[];
   reviews: Review[];
+  tags: string[];
 }
 
 export interface UserReview {
@@ -47,3 +48,50 @@ export interface UserInfo {
 }
 
 export type SortType = 'recommend' | 'score' | 'night' | 'morning';
+
+export interface BadgeDef {
+  id: string;
+  name: string;
+  icon: string;
+  series: 'safety' | 'feature' | 'master';
+  condition: string;
+  color: string;
+}
+
+export interface EarnedBadge {
+  id: string;
+  routeId: string;
+  time: string;
+}
+
+export interface EasterEggDef {
+  id: string;
+  routeId: string;
+  type: 'trivia' | 'slogan' | 'history';
+  title: string;
+  content: string;
+  icon: string;
+}
+
+export interface FoundEgg {
+  id: string;
+  time: string;
+}
+
+export interface DailyChallenge {
+  id: string;
+  type: 'explore' | 'badge' | 'area' | 'egg';
+  title: string;
+  desc: string;
+  targetRouteId?: string;
+  targetArea?: string;
+  exp: number;
+  completed: boolean;
+}
+
+export interface ExpRecord {
+  total: number;
+  level: number;
+  streak: number;
+  lastChallengeDate: string;
+}

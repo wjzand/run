@@ -9,6 +9,9 @@ export default defineAppConfig({
     'pages/favList/index',
     'pages/myReviewList/index',
     'pages/historyList/index',
+    'pages/badges/wall/index',
+    'pages/eastereggs/list/index',
+    'pages/rank/detail/index',
   ],
   window: {
     backgroundTextStyle: 'light',

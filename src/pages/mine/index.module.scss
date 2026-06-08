@@ -44,6 +44,24 @@
   font-size: $font-size-xl;
   font-weight: $font-weight-bold;
   color: $color-text-white;
+  display: block;
+}
+
+.levelRow {
+  display: flex;
+  align-items: center;
+  margin-top: $spacing-xs;
+}
+
+.levelIcon {
+  font-size: $font-size-md;
+  margin-right: $spacing-xs;
+}
+
+.levelName {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: $font-weight-medium;
 }
 
 .editNickBtn {
@@ -133,121 +151,16 @@
   color: $color-text-primary;
 }
 
+.menuBadge {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+  margin-right: $spacing-xs;
+}
+
 .menuArrow {
   font-size: $font-size-sm;
   color: $color-text-tertiary;
-}
-
-.subSection {
-  margin: $spacing-lg $spacing-lg 0;
-}
-
-.subTitle {
-  font-size: $font-size-md;
-  font-weight: $font-weight-semibold;
-  color: $color-text-primary;
-  margin-bottom: $spacing-md;
-}
-
-.emptyTip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 80rpx 0;
-}
-
-.emptyIcon {
-  font-size: 80rpx;
-  margin-bottom: $spacing-md;
-}
-
-.emptyText {
-  font-size: $font-size-md;
-  color: $color-text-tertiary;
-}
-
-.favItem {
-  display: flex;
-  align-items: center;
-  padding: $spacing-md;
-  background: $color-bg-card;
-  border-radius: $radius-md;
-  margin-bottom: $spacing-sm;
-  box-shadow: $shadow-card;
-
-  &:active {
-    opacity: 0.95;
-  }
-}
-
-.favName {
-  flex: 1;
-  font-size: $font-size-md;
-  font-weight: $font-weight-medium;
-  color: $color-text-primary;
-  @include text-ellipsis;
-}
-
-.favScore {
-  font-size: $font-size-md;
-  font-weight: $font-weight-semibold;
-  color: $color-primary;
-  margin-left: $spacing-sm;
-}
-
-.historyItem {
-  display: flex;
-  align-items: center;
-  padding: $spacing-md;
-  background: $color-bg-card;
-  border-radius: $radius-md;
-  margin-bottom: $spacing-sm;
-  box-shadow: $shadow-card;
-
-  &:active {
-    opacity: 0.95;
-  }
-}
-
-.historyName {
-  flex: 1;
-  font-size: $font-size-md;
-  color: $color-text-primary;
-  @include text-ellipsis;
-}
-
-.historyTime {
-  font-size: $font-size-xs;
-  color: $color-text-tertiary;
-  margin-left: $spacing-sm;
-}
-
-.reviewItem {
-  display: flex;
-  align-items: center;
-  padding: $spacing-md;
-  background: $color-bg-card;
-  border-radius: $radius-md;
-  margin-bottom: $spacing-sm;
-  box-shadow: $shadow-card;
-
-  &:active {
-    opacity: 0.95;
-  }
-}
-
-.reviewRouteName {
-  flex: 1;
-  font-size: $font-size-md;
-  color: $color-text-primary;
-  @include text-ellipsis;
-}
-
-.reviewTime {
-  font-size: $font-size-xs;
-  color: $color-text-tertiary;
-  margin-left: $spacing-sm;
 }
 
 .clearBtn {

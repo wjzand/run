@@ -35,6 +35,7 @@ const routes: RouteItem[] = [
       { id: 'rev004', user: '跑者小王', avatar: 'https://picsum.photos/id/338/200/200', score: 4, content: '周末人有点多', time: '2024-05-12' },
       { id: 'rev005', user: '健身达人', avatar: 'https://picsum.photos/id/1027/200/200', score: 3, content: '部分路段灯光偏暗', time: '2024-05-10' },
     ],
+    tags: ['night'],
   },
   {
     id: 'r002',
@@ -68,6 +69,7 @@ const routes: RouteItem[] = [
       { id: 'rev007', user: '晨跑一族', avatar: 'https://picsum.photos/id/91/200/200', score: 4, content: '清晨人少，非常舒服', time: '2024-05-20' },
       { id: 'rev008', user: '游客跑者', avatar: 'https://picsum.photos/id/177/200/200', score: 4, content: '路面很好，但节假日人太多', time: '2024-05-17' },
     ],
+    tags: ['morning'],
   },
   {
     id: 'r003',
@@ -100,6 +102,7 @@ const routes: RouteItem[] = [
       { id: 'rev009', user: '长跑健将', avatar: 'https://picsum.photos/id/338/200/200', score: 3, content: '白天跑不错，晚上有点暗', time: '2024-05-21' },
       { id: 'rev010', user: '跑友小李', avatar: 'https://picsum.photos/id/1027/200/200', score: 4, content: '视野很开阔，跑起来很爽', time: '2024-05-19' },
     ],
+    tags: ['morning'],
   },
   {
     id: 'r004',
@@ -132,6 +135,7 @@ const routes: RouteItem[] = [
       { id: 'rev011', user: '慢跑者', avatar: 'https://picsum.photos/id/64/200/200', score: 4, content: '离家近，方便日常跑步', time: '2024-05-18' },
       { id: 'rev012', user: '新手跑者', avatar: 'https://picsum.photos/id/91/200/200', score: 3, content: '路面有些坑洼，注意脚下', time: '2024-05-16' },
     ],
+    tags: ['morning', 'park'],
   },
   {
     id: 'r005',
@@ -166,6 +170,7 @@ const routes: RouteItem[] = [
       { id: 'rev015', user: '夜跑族', avatar: 'https://picsum.photos/id/1027/200/200', score: 4, content: '人很多，有时候需要错峰', time: '2024-05-19' },
       { id: 'rev016', user: '跑团团长', avatar: 'https://picsum.photos/id/64/200/200', score: 5, content: '我们跑团每周都在这集合', time: '2024-05-17' },
     ],
+    tags: ['night'],
   },
   {
     id: 'r006',
@@ -198,6 +203,7 @@ const routes: RouteItem[] = [
       { id: 'rev017', user: '探险跑者', avatar: 'https://picsum.photos/id/91/200/200', score: 3, content: '白天还行，晚上不太敢一个人跑', time: '2024-05-20' },
       { id: 'rev018', user: '历史爱好者', avatar: 'https://picsum.photos/id/177/200/200', score: 3, content: '风景有韵味，但安全系数一般', time: '2024-05-18' },
     ],
+    tags: ['morning'],
   },
   {
     id: 'r007',
@@ -231,6 +237,7 @@ const routes: RouteItem[] = [
       { id: 'rev020', user: '夜跑小白', avatar: 'https://picsum.photos/id/1027/200/200', score: 1, content: '走过一次就不敢再去了', time: '2024-05-20' },
       { id: 'rev021', user: '跑步老杭州', avatar: 'https://picsum.photos/id/64/200/200', score: 2, content: '白天可以走走，晚上算了', time: '2024-05-18' },
     ],
+    tags: [],
   },
   {
     id: 'r008',
@@ -263,6 +270,7 @@ const routes: RouteItem[] = [
       { id: 'rev022', user: '自然跑者', avatar: 'https://picsum.photos/id/91/200/200', score: 3, content: '白天风景绝美，但晚上完全不行', time: '2024-05-21' },
       { id: 'rev023', user: '摄影跑者', avatar: 'https://picsum.photos/id/177/200/200', score: 2, content: '晚上漆黑一片，安全风险较高', time: '2024-05-19' },
     ],
+    tags: ['morning'],
   },
   {
     id: 'r009',
@@ -295,6 +303,7 @@ const routes: RouteItem[] = [
       { id: 'rev024', user: '山地跑者', avatar: 'https://picsum.photos/id/338/200/200', score: 4, content: '有坡度，训练效果好', time: '2024-05-22' },
       { id: 'rev025', user: '附近居民', avatar: 'https://picsum.photos/id/1027/200/200', score: 3, content: '坡道有点多，新手慎重', time: '2024-05-20' },
     ],
+    tags: ['mountain'],
   },
   {
     id: 'r010',
@@ -327,6 +336,7 @@ const routes: RouteItem[] = [
       { id: 'rev026', user: '长距离跑者', avatar: 'https://picsum.photos/id/64/200/200', score: 4, content: '跑长距离很爽，但晚上人太少', time: '2024-05-23' },
       { id: 'rev027', user: '下沙学生', avatar: 'https://picsum.photos/id/91/200/200', score: 3, content: '白天不错，晚上有点怕', time: '2024-05-21' },
     ],
+    tags: ['morning'],
   },
   {
     id: 'r011',
@@ -359,6 +369,7 @@ const routes: RouteItem[] = [
       { id: 'rev028', user: '文艺跑者', avatar: 'https://picsum.photos/id/177/200/200', score: 4, content: '环境非常好，适合慢跑', time: '2024-05-22' },
       { id: 'rev029', user: '良渚居民', avatar: 'https://picsum.photos/id/338/200/200', score: 3, content: '小区环境好，但晚上灯光暗了点', time: '2024-05-20' },
     ],
+    tags: ['morning'],
   },
   {
     id: 'r012',
@@ -392,6 +403,7 @@ const routes: RouteItem[] = [
       { id: 'rev031', user: '家庭跑者', avatar: 'https://picsum.photos/id/91/200/200', score: 4, content: '带孩子一起跑也很安全', time: '2024-05-21' },
       { id: 'rev032', user: '速度训练者', avatar: 'https://picsum.photos/id/177/200/200', score: 5, content: '跑道质量很好，适合速度训练', time: '2024-05-19' },
     ],
+    tags: ['night', 'morning', 'park'],
   },
 ];
 

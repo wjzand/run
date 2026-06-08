@@ -4,10 +4,25 @@ import Taro from '@tarojs/taro';
 import RadarChart from '@/components/RadarChart';
 import ScoreTag from '@/components/ScoreTag';
 import ReviewItem from '@/components/ReviewItem';
+import EggPopup from '@/components/EggPopup';
 import routes from '@/data/routes';
+import BADGES from '@/data/badges';
+import EASTER_EGGS from '@/data/eastereggs';
+import { EXP_REWARDS } from '@/data/levels';
 import { calcOverallScore, getLevel, calcAverageSecurity } from '@/utils/score';
-import { isFavorite, toggleFavorite, addHistory, getMyReviews } from '@/utils/storage';
-import type { Review, SecurityScores } from '@/types';
+import {
+  isFavorite,
+  toggleFavorite,
+  addHistory,
+  getMyReviews,
+  onRouteExplored,
+  addExp,
+  addFoundEgg,
+  getFoundEggs,
+  completeDailyChallenge,
+  getDailyChallenge,
+} from '@/utils/storage';
+import type { Review, SecurityScores, EasterEggDef } from '@/types';
 import styles from './index.module.scss';
 
 const DIM_DESCRIPTIONS: Record<keyof SecurityScores, string[]> = {
@@ -25,7 +40,6 @@ const DetailPage: React.FC = () => {
   });
 
   const route = useMemo(() => routes.find((r) => r.id === id), [id]);
-
   const userReviews = useMemo(() => getMyReviews().filter((r) => r.routeId === id), [id]);
 
   const mergedReviews: Review[] = useMemo(() => {
@@ -51,19 +65,64 @@ const DetailPage: React.FC = () => {
 
   const overallScore = useMemo(() => calcOverallScore(avgSecurity), [avgSecurity]);
   const level = useMemo(() => getLevel(overallScore), [overallScore]);
-
   const [favorited, setFavorited] = useState(() => isFavorite(id));
+
+  const routeEgg = useMemo((): EasterEggDef | null => {
+    const foundIds = getFoundEggs().map((e) => e.id);
+    const egg = EASTER_EGGS.find((e) => e.routeId === id && !foundIds.includes(e.id));
+    return egg || null;
+  }, [id]);
+  const [showEgg, setShowEgg] = useState(false);
+  const [eggTriggered, setEggTriggered] = useState(false);
 
   React.useEffect(() => {
     addHistory(id);
-  }, [id]);
+    const result = onRouteExplored(id);
+    if (result.newBadges.length > 0) {
+      const badgeNames = result.newBadges.map((bid) => {
+        const def = BADGES.find((b) => b.id === bid);
+        return def ? def.name : bid;
+      });
+      setTimeout(() => {
+        Taro.showToast({ title: `获得勋章：${badgeNames.join('、')}`, icon: 'none', duration: 3000 });
+      }, 500);
+    }
+    addExp(EXP_REWARDS.browseRoute);
+
+    const challenge = getDailyChallenge();
+    if (challenge && !challenge.completed) {
+      if (challenge.type === 'explore' && challenge.targetRouteId === id) {
+        completeDailyChallenge();
+        setTimeout(() => Taro.showToast({ title: '每日挑战完成！+30经验', icon: 'none' }), 1500);
+      }
+    }
+
+    if (routeEgg && !eggTriggered) {
+      const timer = setTimeout(() => {
+        setShowEgg(true);
+        setEggTriggered(true);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [id, routeEgg]);
+
+  const handleEggClose = () => {
+    if (routeEgg) {
+      addFoundEgg({ id: routeEgg.id, time: new Date().toISOString().split('T')[0] });
+      addExp(EXP_REWARDS.findEgg);
+      const challenge = getDailyChallenge();
+      if (challenge && !challenge.completed && challenge.type === 'egg') {
+        completeDailyChallenge();
+        Taro.showToast({ title: '彩蛋猎人挑战完成！', icon: 'none' });
+      }
+    }
+    setShowEgg(false);
+  };
 
   if (!route) {
     return (
       <View className={styles.container}>
-        <View className={styles.section}>
-          <Text>路线不存在</Text>
-        </View>
+        <View className={styles.section}><Text>路线不存在</Text></View>
       </View>
     );
   }
@@ -71,33 +130,15 @@ const DetailPage: React.FC = () => {
   const handleFavorite = () => {
     const nowFav = toggleFavorite(id);
     setFavorited(nowFav);
+    if (nowFav) addExp(EXP_REWARDS.favoriteRoute);
     Taro.showToast({ title: nowFav ? '已收藏' : '已取消收藏', icon: 'none' });
   };
 
-  const handleWriteReview = () => {
-    Taro.navigateTo({ url: `/pages/review/index?id=${id}` });
-  };
-
-  const handleViewAllReviews = () => {
-    Taro.navigateTo({ url: `/pages/reviewList/index?id=${id}` });
-  };
-
-  const handleNavigate = () => {
-    Taro.showToast({ title: '请使用地图App导航', icon: 'none' });
-  };
-
-  const handleShare = () => {
-    Taro.showShareMenu({ withShareTicket: true });
-  };
-
+  const polylineColor = level === 'green' ? '#00b42a' : level === 'yellow' ? '#ff7d00' : '#f53f3f';
   const getDimDesc = (key: keyof SecurityScores, score: number) => {
     const idx = Math.min(Math.max(Math.round(score) - 1, 0), 4);
     return DIM_DESCRIPTIONS[key][idx];
   };
-
-  const polylineColor = level === 'green' ? '#00b42a' : level === 'yellow' ? '#ff7d00' : '#f53f3f';
-
-  const displayReviews = mergedReviews.slice(0, 3);
 
   return (
     <View className={styles.container}>
@@ -169,28 +210,10 @@ const DetailPage: React.FC = () => {
           latitude={route.path[0].lat}
           longitude={route.path[0].lng}
           scale={13}
-          polylines={[
-            {
-              points: route.path.map((p) => ({ latitude: p.lat, longitude: p.lng })),
-              color: polylineColor,
-              width: 4,
-            },
-          ]}
+          polylines={[{ points: route.path.map((p) => ({ latitude: p.lat, longitude: p.lng })), color: polylineColor, width: 4 }]}
           markers={[
-            {
-              id: 1,
-              latitude: route.path[0].lat,
-              longitude: route.path[0].lng,
-              title: '起点',
-              callout: { content: '起点', display: 'ALWAYS', fontSize: 12, borderRadius: 6, bgColor: '#ffffff', padding: 4 },
-            },
-            {
-              id: 2,
-              latitude: route.path[route.path.length - 1].lat,
-              longitude: route.path[route.path.length - 1].lng,
-              title: '终点',
-              callout: { content: '终点', display: 'ALWAYS', fontSize: 12, borderRadius: 6, bgColor: '#ffffff', padding: 4 },
-            },
+            { id: 1, latitude: route.path[0].lat, longitude: route.path[0].lng, title: '起点', callout: { content: '起点', display: 'ALWAYS', fontSize: 12, borderRadius: 6, bgColor: '#ffffff', padding: 4, color: '#333333', anchorX: 0, anchorY: 0, borderWidth: 0, borderColor: '#ffffff', textAlign: 'center' } as any },
+            { id: 2, latitude: route.path[route.path.length - 1].lat, longitude: route.path[route.path.length - 1].lng, title: '终点', callout: { content: '终点', display: 'ALWAYS', fontSize: 12, borderRadius: 6, bgColor: '#ffffff', padding: 4, color: '#333333', anchorX: 0, anchorY: 0, borderWidth: 0, borderColor: '#ffffff', textAlign: 'center' } as any },
           ]}
         />
       </View>
@@ -198,16 +221,12 @@ const DetailPage: React.FC = () => {
       <View className={styles.section}>
         <View className={styles.reviewHeader}>
           <Text className={styles.sectionTitle}>用户评价 ({mergedReviews.length})</Text>
-          <Text className={styles.reviewAllBtn} onClick={handleViewAllReviews}>
+          <Text className={styles.reviewAllBtn} onClick={() => Taro.navigateTo({ url: `/pages/reviewList/index?id=${id}` })}>
             查看全部 ›
           </Text>
         </View>
-        {displayReviews.length > 0 ? (
-          displayReviews.map((rev) => <ReviewItem key={rev.id} review={rev} />)
-        ) : (
-          <Text style={{ fontSize: '24rpx', color: '#86909c' }}>暂无评价</Text>
-        )}
-        <View className={styles.writeReviewBtn} onClick={handleWriteReview}>
+        {mergedReviews.slice(0, 3).map((rev) => <ReviewItem key={rev.id} review={rev} />)}
+        <View className={styles.writeReviewBtn} onClick={() => Taro.navigateTo({ url: `/pages/review/index?id=${id}` })}>
           <Text className={styles.writeReviewText}>写评价</Text>
         </View>
       </View>
@@ -219,14 +238,16 @@ const DetailPage: React.FC = () => {
           </Text>
           <Text className={styles.favLabel}>{favorited ? '已收藏' : '收藏'}</Text>
         </View>
-        <View className={styles.navBtn} onClick={handleNavigate}>
+        <View className={styles.navBtn} onClick={() => Taro.showToast({ title: '请使用地图App导航', icon: 'none' })}>
           <Text className={styles.navBtnText}>开始导航</Text>
         </View>
-        <View className={styles.shareBtn} onClick={handleShare}>
+        <View className={styles.shareBtn} onClick={() => Taro.showShareMenu({ withShareTicket: true })}>
           <Text className={styles.shareIcon}>↗</Text>
           <Text className={styles.shareLabel}>分享</Text>
         </View>
       </View>
+
+      {routeEgg && <EggPopup egg={routeEgg} visible={showEgg} onClose={handleEggClose} />}
     </View>
   );
 };

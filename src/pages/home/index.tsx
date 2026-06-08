@@ -1,10 +1,19 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text, ScrollView, Map } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
 import RouteCard from '@/components/RouteCard';
+import ChallengeCard from '@/components/ChallengeCard';
+import ProgressRing from '@/components/ProgressRing';
 import routes from '@/data/routes';
 import type { SortType } from '@/types';
+import {
+  getExplorationProgress,
+  getExploredRoutes,
+  generateDailyChallenge,
+  completeDailyChallenge,
+  getDailyChallenge,
+} from '@/utils/storage';
 import styles from './index.module.scss';
 
 const FILTER_OPTIONS: { key: SortType; label: string }[] = [
@@ -20,6 +29,15 @@ const HomePage: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<SortType>('recommend');
   const [showMap, setShowMap] = useState(false);
   const [page, setPage] = useState(1);
+  const [tick, setTick] = useState(0);
+  const forceUpdate = useCallback(() => setTick((t) => t + 1), []);
+
+  const explorationProgress = useMemo(() => getExplorationProgress(), [tick]);
+  const exploredRoutes = useMemo(() => getExploredRoutes(), [tick]);
+  const dailyChallenge = useMemo(() => {
+    const ch = getDailyChallenge();
+    return ch || generateDailyChallenge();
+  }, [tick]);
 
   const sortedRoutes = useCallback(() => {
     const list = [...routes];
@@ -56,19 +74,27 @@ const HomePage: React.FC = () => {
   };
 
   const handleLoadMore = () => {
-    if (hasMore) {
-      setPage((p) => p + 1);
-    }
+    if (hasMore) setPage((p) => p + 1);
   };
 
   const handleMapToggle = () => {
     setShowMap(!showMap);
   };
 
+  const handleCompleteChallenge = () => {
+    completeDailyChallenge();
+    forceUpdate();
+    Taro.showToast({ title: '挑战完成！+30经验', icon: 'none' });
+  };
+
   const getPolylineColor = (level: string) => {
     if (level === 'green') return '#00b42a';
     if (level === 'yellow') return '#ff7d00';
     return '#f53f3f';
+  };
+
+  const getMarkerAlpha = (routeId: string) => {
+    return exploredRoutes.includes(routeId) ? 1 : 0.4;
   };
 
   return (
@@ -87,6 +113,18 @@ const HomePage: React.FC = () => {
             <Text className={styles.mapToggleText}>{showMap ? '列表' : '地图'}</Text>
           </View>
         </View>
+      </View>
+
+      <View className={styles.adventureSection}>
+        <View className={styles.adventureLeft}>
+          <Text className={styles.adventureTitle}>🏃 跑步大冒险</Text>
+          <Text className={styles.adventureDesc}>已探索 {explorationProgress}% 的路线</Text>
+        </View>
+        <ProgressRing percent={explorationProgress} size={64} strokeWidth={5} />
+      </View>
+
+      <View className={styles.challengeSection}>
+        <ChallengeCard challenge={dailyChallenge} onComplete={handleCompleteChallenge} />
       </View>
 
       <View className={styles.filterSection}>
@@ -113,37 +151,52 @@ const HomePage: React.FC = () => {
 
       {showMap ? (
         <View className={styles.listSection}>
-          <Map
-            className={styles.mapContainer}
-            latitude={30.27}
-            longitude={120.15}
-            scale={11}
-            polylines={routes.map((route) => ({
-              points: route.path.map((p) => ({ latitude: p.lat, longitude: p.lng })),
-              color: getPolylineColor(route.level),
-              width: 4,
-              dottedLine: false,
-            }))}
-            markers={routes.map((route) => ({
-              id: parseInt(route.id.replace('r', '')),
-              latitude: route.path[0].lat,
-              longitude: route.path[0].lng,
-              title: route.name,
-              callout: {
-                content: `${route.name} ★${route.overallScore}`,
-                display: 'ALWAYS',
-                color: '#1d2129',
-                fontSize: 12,
-                borderRadius: 8,
-                bgColor: '#ffffff',
-                padding: 6,
-              },
-            }))}
-          />
+          <View className={styles.mapWrap}>
+            <Map
+              className={styles.mapContainer}
+              latitude={30.27}
+              longitude={120.15}
+              scale={11}
+              polylines={routes
+                .filter((r) => exploredRoutes.includes(r.id))
+                .map((route) => ({
+                  points: route.path.map((p) => ({ latitude: p.lat, longitude: p.lng })),
+                  color: getPolylineColor(route.level),
+                  width: 4,
+                  dottedLine: false,
+                }))}
+              markers={routes.map((route) => ({
+                id: parseInt(route.id.replace('r', '')),
+                latitude: route.path[0].lat,
+                longitude: route.path[0].lng,
+                alpha: getMarkerAlpha(route.id),
+                title: route.name,
+                callout: {
+                  content: exploredRoutes.includes(route.id)
+                    ? `${route.name} ★${route.overallScore}`
+                    : '???',
+                  display: 'ALWAYS',
+                  color: '#1d2129',
+                  fontSize: 12,
+                  borderRadius: 8,
+                  bgColor: '#ffffff',
+                  padding: 6,
+                },
+              }))}
+            />
+            {!exploredRoutes.length && (
+              <View className={styles.fogOverlay}>
+                <Text className={styles.fogText}>🌫️ 探索路线来驱散迷雾</Text>
+              </View>
+            )}
+          </View>
+          <View className={styles.exploreInfo}>
+            <Text className={styles.exploreText}>已探索 {exploredRoutes.length}/{routes.length} 条路线</Text>
+          </View>
         </View>
       ) : (
         <View className={styles.listSection}>
-          <ScrollView scrollY style={{ height: 'calc(100vh - 400rpx)' }} onScrollToLower={handleLoadMore}>
+          <ScrollView scrollY style={{ height: 'calc(100vh - 680rpx)' }} onScrollToLower={handleLoadMore}>
             {displayRoutes.map((route) => (
               <RouteCard key={route.id} route={route} onClick={handleRouteClick} />
             ))}

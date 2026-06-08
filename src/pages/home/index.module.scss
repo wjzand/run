@@ -67,6 +67,38 @@
   color: $color-text-white;
 }
 
+.adventureSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: $spacing-md $spacing-lg 0;
+  padding: $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+}
+
+.adventureLeft {
+  flex: 1;
+}
+
+.adventureTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.adventureDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.challengeSection {
+  margin: $spacing-sm $spacing-lg 0;
+}
+
 .filterSection {
   padding: $spacing-lg 0 0 $spacing-lg;
 }
@@ -110,34 +142,47 @@
   padding: $spacing-md $spacing-lg 0;
 }
 
-.listTitle {
-  font-size: $font-size-lg;
-  font-weight: $font-weight-semibold;
-  color: $color-text-primary;
-  margin-bottom: $spacing-md;
+.mapWrap {
+  position: relative;
 }
 
 .mapContainer {
   width: 100%;
   height: 600rpx;
   margin: $spacing-md 0;
+  border-radius: $radius-lg;
+  overflow: hidden;
 }
 
-.emptyTip {
+.fogOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(30, 30, 30, 0.35);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 120rpx 0;
+  border-radius: $radius-lg;
+  pointer-events: none;
 }
 
-.emptyIcon {
-  font-size: 80rpx;
-  margin-bottom: $spacing-md;
+.fogText {
+  font-size: $font-size-lg;
+  color: $color-text-white;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
 }
 
-.emptyText {
-  font-size: $font-size-md;
+.exploreInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-sm 0;
+}
+
+.exploreText {
+  font-size: $font-size-sm;
   color: $color-text-tertiary;
 }
 
