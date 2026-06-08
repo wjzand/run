@@ -1,0 +1,154 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 120rpx;
+}
+
+.header {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  padding: $spacing-lg;
+  padding-top: $spacing-xl;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: $radius-round;
+  padding: 0 $spacing-lg;
+  height: 72rpx;
+}
+
+.searchIcon {
+  font-size: $font-size-lg;
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: $spacing-sm;
+}
+
+.searchPlaceholder {
+  font-size: $font-size-md;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.headerInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: $spacing-md;
+}
+
+.headerTitle {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+}
+
+.headerDesc {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: $spacing-xs;
+}
+
+.mapToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 72rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: $radius-md;
+  flex-shrink: 0;
+}
+
+.mapToggleText {
+  font-size: $font-size-xs;
+  color: $color-text-white;
+}
+
+.filterSection {
+  padding: $spacing-lg 0 0 $spacing-lg;
+}
+
+.filterScroll {
+  white-space: nowrap;
+}
+
+.filterItem {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 32rpx;
+  border-radius: $radius-round;
+  background: $color-bg-card;
+  margin-right: $spacing-sm;
+  white-space: nowrap;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.97);
+  }
+}
+
+.filterItemActive {
+  background: $color-primary;
+}
+
+.filterText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.filterTextActive {
+  color: $color-text-white;
+}
+
+.listSection {
+  padding: $spacing-md $spacing-lg 0;
+}
+
+.listTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.mapContainer {
+  width: 100%;
+  height: 600rpx;
+  margin: $spacing-md 0;
+}
+
+.emptyTip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.emptyIcon {
+  font-size: 80rpx;
+  margin-bottom: $spacing-md;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}
+
+.loadMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg 0;
+}
+
+.loadMoreText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}

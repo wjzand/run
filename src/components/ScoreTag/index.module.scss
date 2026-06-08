@@ -1,0 +1,44 @@
+@use '@/styles/variables.scss' as *;
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rpx 20rpx;
+  border-radius: $radius-round;
+  white-space: nowrap;
+}
+
+.small {
+  padding: 2rpx 12rpx;
+}
+
+.green {
+  background: $color-safe-green-bg;
+}
+
+.yellow {
+  background: $color-safe-yellow-bg;
+}
+
+.red {
+  background: $color-safe-red-bg;
+}
+
+.text {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+}
+
+.textGreen {
+  color: $color-safe-green;
+}
+
+.textYellow {
+  color: $color-safe-yellow;
+}
+
+.textRed {
+  color: $color-safe-red;
+}

@@ -1,0 +1,186 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 120rpx;
+}
+
+.searchSection {
+  background: $color-bg-card;
+  padding: $spacing-lg;
+}
+
+.searchInputWrap {
+  display: flex;
+  align-items: center;
+  background: $color-bg-page;
+  border-radius: $radius-round;
+  padding: 0 $spacing-lg;
+  height: 72rpx;
+}
+
+.searchInput {
+  flex: 1;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  height: 72rpx;
+}
+
+.searchBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 $spacing-lg;
+  height: 56rpx;
+  background: $color-primary;
+  border-radius: $radius-round;
+  margin-left: $spacing-sm;
+  flex-shrink: 0;
+}
+
+.searchBtnText {
+  font-size: $font-size-sm;
+  color: $color-text-white;
+  white-space: nowrap;
+}
+
+.filterSection {
+  background: $color-bg-card;
+  padding: $spacing-lg;
+  margin-top: $spacing-sm;
+}
+
+.filterTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.filterTag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx 24rpx;
+  border-radius: $radius-round;
+  background: $color-bg-page;
+  border: 1rpx solid $color-border;
+  transition: all $transition-base;
+}
+
+.filterTagActive {
+  background: $color-primary;
+  border-color: $color-primary;
+}
+
+.filterTagText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.filterTagTextActive {
+  color: $color-text-white;
+}
+
+.scoreFilter {
+  display: flex;
+  align-items: center;
+  margin-top: $spacing-sm;
+}
+
+.scoreLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-right: $spacing-sm;
+  white-space: nowrap;
+}
+
+.scoreValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+  min-width: 60rpx;
+}
+
+.historySection {
+  background: $color-bg-card;
+  padding: $spacing-lg;
+  margin-top: $spacing-sm;
+}
+
+.historyHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.historyTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.historyClear {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.historyTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.historyTag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8rpx 24rpx;
+  border-radius: $radius-round;
+  background: $color-bg-page;
+}
+
+.historyTagText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.resultSection {
+  padding: $spacing-md $spacing-lg 0;
+}
+
+.resultTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.emptyTip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.emptyIcon {
+  font-size: 80rpx;
+  margin-bottom: $spacing-md;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}
