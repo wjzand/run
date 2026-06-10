@@ -2,11 +2,9 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import useAppStore from '@/store';
-import routes from '@/data/routes';
 import { getLevelIcon, getLevelName, getExpForNextLevel } from '@/data/levels';
 import {
   getFavorites,
-  getMyReviews,
   getEarnedBadges,
   getFoundEggs,
   getExpRecord,
@@ -22,7 +20,6 @@ const MinePage: React.FC = () => {
   const forceUpdate = useCallback(() => setTick((t) => t + 1), []);
 
   const favorites = useMemo(() => getFavorites(), [tick]);
-  const myReviews = useMemo(() => getMyReviews(), [tick]);
   const earnedBadges = useMemo(() => getEarnedBadges(), [tick]);
   const foundEggs = useMemo(() => getFoundEggs(), [tick]);
   const expRecord = useMemo(() => getExpRecord(), [tick]);
@@ -30,12 +27,12 @@ const MinePage: React.FC = () => {
   const expInfo = useMemo(() => getExpForNextLevel(expRecord.total), [tick]);
 
   const handleEditNick = useCallback(() => {
-    Taro.showModal({
+    (Taro.showModal as any)({
       title: '修改昵称',
       editable: true,
       placeholderText: '请输入昵称',
       content: userInfo.nickName,
-      success: (res) => {
+      success: (res: any) => {
         if (res.confirm && res.content) {
           setUserInfo({ ...userInfo, nickName: res.content.trim() });
         }

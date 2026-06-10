@@ -109,7 +109,6 @@ const DetailPage: React.FC = () => {
   const handleEggClose = () => {
     if (routeEgg) {
       addFoundEgg({ id: routeEgg.id, time: new Date().toISOString().split('T')[0] });
-      addExp(EXP_REWARDS.findEgg);
       const challenge = getDailyChallenge();
       if (challenge && !challenge.completed && challenge.type === 'egg') {
         completeDailyChallenge();
@@ -210,11 +209,12 @@ const DetailPage: React.FC = () => {
           latitude={route.path[0].lat}
           longitude={route.path[0].lng}
           scale={13}
-          polylines={[{ points: route.path.map((p) => ({ latitude: p.lat, longitude: p.lng })), color: polylineColor, width: 4 }]}
+          polyline={[{ points: route.path.map((p) => ({ latitude: p.lat, longitude: p.lng })), color: polylineColor, width: 4 }]}
           markers={[
-            { id: 1, latitude: route.path[0].lat, longitude: route.path[0].lng, title: '起点', callout: { content: '起点', display: 'ALWAYS', fontSize: 12, borderRadius: 6, bgColor: '#ffffff', padding: 4, color: '#333333', anchorX: 0, anchorY: 0, borderWidth: 0, borderColor: '#ffffff', textAlign: 'center' } as any },
-            { id: 2, latitude: route.path[route.path.length - 1].lat, longitude: route.path[route.path.length - 1].lng, title: '终点', callout: { content: '终点', display: 'ALWAYS', fontSize: 12, borderRadius: 6, bgColor: '#ffffff', padding: 4, color: '#333333', anchorX: 0, anchorY: 0, borderWidth: 0, borderColor: '#ffffff', textAlign: 'center' } as any },
-          ]}
+            { id: 1, latitude: route.path[0].lat, longitude: route.path[0].lng, title: '起点', iconPath: '', callout: { content: '起点', display: 'ALWAYS', fontSize: 12, borderRadius: 6, bgColor: '#ffffff', padding: 4, color: '#333333', anchorX: 0, anchorY: 0, borderWidth: 0, borderColor: '#ffffff', textAlign: 'center' } as any },
+            { id: 2, latitude: route.path[route.path.length - 1].lat, longitude: route.path[route.path.length - 1].lng, title: '终点', iconPath: '', callout: { content: '终点', display: 'ALWAYS', fontSize: 12, borderRadius: 6, bgColor: '#ffffff', padding: 4, color: '#333333', anchorX: 0, anchorY: 0, borderWidth: 0, borderColor: '#ffffff', textAlign: 'center' } as any },
+          ] as any}
+          onError={() => {}}
         />
       </View>
 

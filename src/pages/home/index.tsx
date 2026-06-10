@@ -157,7 +157,7 @@ const HomePage: React.FC = () => {
               latitude={30.27}
               longitude={120.15}
               scale={11}
-              polylines={routes
+              polyline={routes
                 .filter((r) => exploredRoutes.includes(r.id))
                 .map((route) => ({
                   points: route.path.map((p) => ({ latitude: p.lat, longitude: p.lng })),
@@ -171,6 +171,7 @@ const HomePage: React.FC = () => {
                 longitude: route.path[0].lng,
                 alpha: getMarkerAlpha(route.id),
                 title: route.name,
+                iconPath: '',
                 callout: {
                   content: exploredRoutes.includes(route.id)
                     ? `${route.name} ★${route.overallScore}`
@@ -182,7 +183,8 @@ const HomePage: React.FC = () => {
                   bgColor: '#ffffff',
                   padding: 6,
                 },
-              }))}
+              } as any))}
+              onError={() => {}}
             />
             {!exploredRoutes.length && (
               <View className={styles.fogOverlay}>
